@@ -24,10 +24,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveInput.x = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
-        moveInput.z = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+        //moveInput.x = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+        //moveInput.z = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
 
-        charCon.Move(moveInput);
+        Vector3 vertMove = transform.forward * Input.GetAxisRaw("Vertical");
+        Vector3 horiMove = transform.right * Input.GetAxisRaw("Horizontal");
+        
+        moveInput = horiMove + vertMove;
+        moveInput.Normalize();
+        moveInput = moveInput * moveSpeed;
+
+        charCon.Move(moveInput * Time.deltaTime);
 
         //control camera rotation
         Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
